@@ -1,3 +1,77 @@
+@font-face {
+  font-family: NotoSerif;
+  src: url(./Fonts/NotoSerif.ttf);
+}
+
+@font-face {
+  font-family: Commissioner;
+  src: url(./Fonts/Commissioner.ttf);
+}
+
+:root {
+    --bg-void: #15171b;
+    --bg-panel: #1d2025;
+    --bg-panel-raised: #22262c;
+    --line-etched: #33373d;
+    --line-etched-bright: #494f57;
+    --accent-copper: #c1793d;
+    --accent-copper-dim: #6e4a2c;
+    --accent-signal: #7fbf8c;
+    --accent-signal-dim: #3f5b46;
+    --text-bright: #eae7e0;
+    --text-dim: #8b8f94;
+    --text-faint: #565a60;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Cascadia Mono", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, sans-serif;
+}
+
+* {
+    font-family: NotoSerif;
+    font-weight: 400;
+}
+
+body {
+    background-color: antiquewhite;
+    margin: 0;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--line-etched);
+  background: var(--bg-panel);
+}
+
+.sub {
+    font-family: var(--sans)
+}
+
 #title {
-    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: white;
+    margin: 0;
+}
+
+.sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+}
+
+#exportButton {
+    font-family: var(--mono);
+    background: transparent;
+    color: var(--accent-copper);
+    border: 1px solid var(--accent-copper-dim);
+    border-radius: 4px;
+    transition: background 0.15s ease, border-color 0.15s ease;
+    padding: 5px;
+}
+#exportButton:hover {
+    background: rgba(193, 121, 61, 0.08);
+    border-color: var(--accent-copper);
 }
