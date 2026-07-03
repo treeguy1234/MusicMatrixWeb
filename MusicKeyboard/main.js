@@ -64,6 +64,11 @@ function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
         categoryEl.appendChild(chipGrid);
         sidebar.appendChild(categoryEl);
     }
+    
+    for (var i = 0; i < 3; i++) {
+        var br = document.createElement("br");
+        document.getElementById("menuContent").appendChild(br);
+    }
 }
 
 buildShortcutChips(shortcuts);
