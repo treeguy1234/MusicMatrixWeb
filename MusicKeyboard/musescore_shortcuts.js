@@ -1,6 +1,6 @@
 const shortcuts = {
   "File Operations": [
-    { title: "New Score",   description: "Create a new score",              shortkey1: "Ctrl",  shortkey2: "N",         shortkey3: "",  icon: null },
+    { title: "New Score",   description: "Create a new score",              shortkey1: "Ctrl",  shortkey2: "N",         shortkey3: "",  icon: "./Icons/New.svg" },
     { title: "Open",        description: "Open a score file",               shortkey1: "Ctrl",  shortkey2: "O",         shortkey3: "",  icon: "./Icons/Open.svg" },
     { title: "Save",        description: "Save the current score",          shortkey1: "Ctrl",  shortkey2: "S",         shortkey3: "",  icon: "./Icons/Save.svg" },
     { title: "Save As",     description: "Save score under a new name",     shortkey1: "Ctrl",  shortkey2: "Shift",     shortkey3: "S", icon: "./Icons/SaveAs.svg" },
@@ -15,7 +15,7 @@ const shortcuts = {
     { title: "Copy",                  description: "Copy selected elements",                     shortkey1: "Ctrl",  shortkey2: "C",         shortkey3: "",  icon: "./Icons/Copy.svg" },
     { title: "Cut",                   description: "Cut selected elements",                      shortkey1: "Ctrl",  shortkey2: "X",         shortkey3: "",  icon: "./Icons/Cut.svg" },
     { title: "Paste",                 description: "Paste clipboard contents",                   shortkey1: "Ctrl",  shortkey2: "V",         shortkey3: "",  icon: "./Icons/Paste.svg" },
-    { title: "Swap with Clipboard",   description: "Swap selection with clipboard contents",     shortkey1: "Ctrl",  shortkey2: "Shift",     shortkey3: "X", icon: null },
+    { title: "Swap with Clipboard",   description: "Swap selection with clipboard contents",     shortkey1: "Ctrl",  shortkey2: "Shift",     shortkey3: "X", icon: "./Icons/PasteSwap.svg" },
     { title: "Select All",            description: "Select all elements in the score",           shortkey1: "Ctrl",  shortkey2: "A",         shortkey3: "",  icon: "./Icons/SelectAll.svg" },
     { title: "Repeat Selection",      description: "Repeat the last copied selection",           shortkey1: "R",     shortkey2: "",          shortkey3: "",  icon: null },
     { title: "Delete",                description: "Clear selected notes/elements",              shortkey1: "Del",   shortkey2: "",          shortkey3: "",  icon: "./Icons/Delete.svg" },
