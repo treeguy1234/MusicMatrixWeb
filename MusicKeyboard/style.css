@@ -136,6 +136,11 @@ header {
     color: white;
 }
 
+.slot:hover {
+    border-color: var(--accent-copper);
+    transform: translateY(-1px);
+}
+
 main {
     display: flex;
     justify-content: center;
