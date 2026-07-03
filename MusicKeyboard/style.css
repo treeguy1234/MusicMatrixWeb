@@ -96,6 +96,7 @@ header {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     gap: 14px;
+    width: 90%;
 }
 
 .slot {
@@ -117,14 +118,24 @@ header {
     color: white;
 }
 
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 aside {
     background-color: var(--bg-panel-raised);
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
     height: 500px;
 }
 
 #menuContent {
+    overflow-y: scroll;
+    overflow-x: hidden;
     scrollbar-color: var(--text-faint) var(--bg-panel-raised);
     scrollbar-width: thin;
 }
