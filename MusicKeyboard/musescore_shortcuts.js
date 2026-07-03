@@ -23,7 +23,7 @@ const shortcuts = {
     { title: "Escape",                description: "Exit current mode or deselect",              shortkey1: "Esc",   shortkey2: "",          shortkey3: "",  icon: null },
     { title: "Edit Element",          description: "Enter edit mode for selected element",       shortkey1: "F2",    shortkey2: "",          shortkey3: "",  icon: "./Icons/Edit.svg" },
     { title: "Show/Hide Properties",  description: "Toggle the Properties panel",               shortkey1: "F8",    shortkey2: "",          shortkey3: "",  icon: "./Icons/SidePanel.svg" },
-    { title: "Find / Go To",          description: "Jump to a specific bar number",             shortkey1: "Ctrl",  shortkey2: "F",         shortkey3: "",  icon: "./Icons/FindReplace.svg" },
+    { title: "Find / Go To",          description: "Jump to a specific bar number",             shortkey1: "Ctrl",  shortkey2: "F",         shortkey3: "",  icon: "./Icons/Find.svg" },
     { title: "Reset Positions",       description: "Reset shapes and positions to default",     shortkey1: "Ctrl",  shortkey2: "R",         shortkey3: "",  icon: "./Icons/ResestPositions.svg" },
   ],
 

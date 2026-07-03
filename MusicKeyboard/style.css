@@ -36,7 +36,11 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    overflow-y: hidden;
+    /*overflow-y: hidden;*/
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 header {
@@ -250,6 +254,17 @@ input {
     margin-top: 1px;
 }
 
-.chip:hover .tooltip {
-    opacity: 1;
+#chipStatus {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    margin: 3px 3px 10px;
+    padding: 6px 8px;
+    background: var(--bg-void);
+    border: 1px solid var(--line-etched);
+    border-radius: 6px;
+    min-height: 40px;
+    white-space: pre-wrap;
+    overflow: hidden;
+    /*text-overflow: ellipsis;*/
 }

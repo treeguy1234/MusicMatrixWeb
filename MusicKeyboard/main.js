@@ -1,11 +1,20 @@
 const padGrid = document.getElementById("padGrid");
+const chipStatus = document.getElementById('chipStatus');
 
 for (let i = 0; i <= 31; i++) {
     const slot = document.createElement("div");
     slot.className = "slot";
     slot.dataset.index = i;
+    slot.addEventListener("mouseenter", () => setChipStatus("Slot S" + i, "Row " + ((i%8)+1) + " Column " + Math.floor(i/8+1)));
+    //chip.addEventListener("mouseleave", () => setChipStatus());
+    slot.addEventListener("focus", () => setChipStatus("Slot S" + i, "Row " + i%8 + " Column " + Math.floor(i/8+1)));
+    //chip.addEventListener("blur", () => setChipStatus());
     slot.innerHTML = `<span class="idx">S${i}</span>`;
     padGrid.appendChild(slot);
+}
+
+function setChipStatus(name, desc) {
+  chipStatus.textContent = desc ? `${name}: ${desc}` : "";
 }
 
 function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
@@ -44,10 +53,10 @@ function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
                 chip.appendChild(fallback);
             }
 
-            const tooltip = document.createElement("div");
+            /*const tooltip = document.createElement("div");
             tooltip.className = "tooltip";
             tooltip.innerHTML = `<span class="name">${item.title}</span><span class="desc">${item.description}</span>`;
-            chip.appendChild(tooltip);
+            chip.appendChild(tooltip);*/
 
             chip.addEventListener("dragstart", (e) => {
                 draggedChip = {
@@ -57,17 +66,17 @@ function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
                 };
                 e.dataTransfer.effectAllowed = "copy";
             });
+            
+            chip.addEventListener("mouseenter", () => setChipStatus(item.title, item.description));
+            //chip.addEventListener("mouseleave", () => setChipStatus());
+            chip.addEventListener("focus", () => setChipStatus(item.title, item.description));
+            //chip.addEventListener("blur", () => setChipStatus());
 
             chipGrid.appendChild(chip);
         });
 
         categoryEl.appendChild(chipGrid);
         sidebar.appendChild(categoryEl);
-    }
-    
-    for (var i = 0; i < 3; i++) {
-        var br = document.createElement("br");
-        document.getElementById("menuContent").appendChild(br);
     }
 }
 
