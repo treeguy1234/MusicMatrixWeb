@@ -286,11 +286,26 @@ footer {
     width: 100%;
 }
 
+footer img {
+    margin-right: 7px;
+    height: 40px;
+    filter: brightness(0) invert(1);
+}
+
 footer p {
     color: #8b8f94;
     text-transform: uppercase;
     font-family: var(--mono);
     font-size: 10px;
+    text-decoration: underline;
+}
+
+footer a {
+    color: #8b8f94;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    font-size: 10px;
+    text-decoration: underline;
 }
 
 footer span {
@@ -300,4 +315,18 @@ footer span {
     margin-left: 5px;
     margin-right: 5px;
     font-size: 7px;
+}
+
+footer p, footer a {
+    transition: ease-in-out 0.1s;
+}
+
+footer p:hover {
+    transform: translateY(-1px);
+    color: var(--accent-copper);
+}
+
+footer a:hover {
+    transform: translateY(-1px);
+    color: var(--accent-copper);
 }
