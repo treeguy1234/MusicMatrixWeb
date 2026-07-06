@@ -145,6 +145,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 aside {
@@ -272,4 +273,31 @@ input {
     white-space: pre-wrap;
     overflow: hidden;
     /*text-overflow: ellipsis;*/
+}
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 18px 28px;
+    border-top: 1px solid var(--line-etched);
+    background: #101114;
+    height: 50px;
+    width: 100%;
+}
+
+footer p {
+    color: #8b8f94;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    font-size: 10px;
+}
+
+footer span {
+    color: #8b8f94;
+    text-transform: uppercase;
+    font-family: var(--mono);
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 7px;
 }
