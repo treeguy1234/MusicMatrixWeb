@@ -1,12 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>TreeGuy1234</title>
-        <link rel="icon" href="./favicon.png">
+        <title>MusicMatrix Code Generator</title>
+        <link rel="icon" href="../favicon.png" />
+        <link rel="stylesheet" href="./style.css" />
     </head>
     <body>
-        <p>This page is a work in progress...</p>
-        <p>Check out <a href="./MusicKeyboard/">https://treeguy1234.github.io/MusicKeyboard</a></p>
+        <header>
+            <div id="left">
+                <p id="title">MusicMatrix Macro Pad Configuration</p>
+                <div class="sub">Drag and drop the icons to assign shortcuts</div>
+            </div>
+            <button id="exportButton">Export .cpp/.ini</button>
+        </header>
+        <div id="app">
+            <main>
+                <div class="pad-grid" id="padGrid"></div>
+            </main>
+            <aside>
+                <p id="chipStatus"></p>
+                <input type="text" id="search" placeholder="Search for an icon..." />
+                <div id="menuContent"></div>
+            </aside>
+        </div>
+        <footer>
+            <p>Designed by TreeGuy1234</p>
+            <span>•</span>
+            <p>Debugged by Claude</p>
+            <span>•</span>
+            <p>View on GitHub</p>
+        </footer>
+        <script src="./musescore_shortcuts.js"></script>
+        <script src="./main.js"></script>
     </body>
 </html>
