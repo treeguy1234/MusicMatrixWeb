@@ -114,15 +114,26 @@ function updateCategoryVisibility() {
     });
 }
 
-document.getElementById('search').addEventListener('input', (e) => {
-  const results = searchShortcuts(e.target.value);
-  const matchingTitles = new Set(results.map(r => r.title));
+document.getElementById("search").addEventListener("input", (e) => {
+    const results = searchShortcuts(e.target.value);
+    const matchingTitles = new Set(results.map((r) => r.title));
 
-  document.querySelectorAll('.chip').forEach(chip => {
-    chip.style.display = matchingTitles.has(chip.dataset.name) ? '' : 'none';
-  });
+    document.querySelectorAll(".chip").forEach((chip) => {
+        chip.style.display = matchingTitles.has(chip.dataset.name) ? "" : "none";
+    });
 
-  updateCategoryVisibility();
+    updateCategoryVisibility();
+});
+
+document.addEventListener("keydown", (event) => {
+    if (event.ctrlKey && event.key === "k") {
+        event.preventDefault();
+        document.getElementById("search").focus();
+    }
+    if (event.key === "/" && !document.getElementById("search").matches(':focus')) {
+        event.preventDefault();
+        document.getElementById("search").focus();
+    }
 });
 
 buildShortcutChips(shortcuts);
