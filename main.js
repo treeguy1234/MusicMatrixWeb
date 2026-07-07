@@ -18,7 +18,8 @@ for (let i = 0; i <= 31; i++) {
     padGrid.appendChild(slot);
 }
 
-function setChipStatus(name, desc) {
+function setChipStatus(name, desc, shortcut) {
+    //chipStatus.textContent = desc ? `${name}: ${desc} - ${shortcut}`: "";
     chipStatus.textContent = desc ? `${name}: ${desc}` : "";
 }
 
@@ -43,6 +44,10 @@ function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
             chip.draggable = true;
             chip.dataset.name = item.title;
             chip.dataset.desc = item.description;
+            chip.setAttribute(
+                "shortcut",
+                `${item.shortkey1}${item.shortkey2 !== "" ? " + " : ""}${item.shortkey2}${item.shortkey3 !== "" ? " + " : ""}${item.shortkey3}`
+            );
             if (item.icon) chip.dataset.icon = item.icon;
 
             if (item.icon) {
@@ -72,9 +77,13 @@ function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
                 e.dataTransfer.effectAllowed = "copy";
             });
 
-            chip.addEventListener("mouseenter", () => setChipStatus(item.title, item.description));
+            chip.addEventListener("mouseenter", () =>
+                setChipStatus(item.title, item.description, chip.getAttribute("shortcut"))
+            );
             //chip.addEventListener("mouseleave", () => setChipStatus());
-            chip.addEventListener("focus", () => setChipStatus(item.title, item.description));
+            chip.addEventListener("focus", () =>
+                setChipStatus(item.title, item.description, chip.getAttribute("shortcut"))
+            );
             //chip.addEventListener("blur", () => setChipStatus());
 
             chipGrid.appendChild(chip);
@@ -125,14 +134,21 @@ document.getElementById("search").addEventListener("input", (e) => {
     updateCategoryVisibility();
 });
 
+document.getElementById("chipStatus").addEventListener("click", function () {
+    document.getElementById("search").focus();
+});
+
 document.addEventListener("keydown", (event) => {
     if (event.ctrlKey && event.key === "k") {
         event.preventDefault();
         document.getElementById("search").focus();
     }
-    if (event.key === "/" && !document.getElementById("search").matches(':focus')) {
+    if (event.key === "/" && !document.getElementById("search").matches(":focus")) {
         event.preventDefault();
         document.getElementById("search").focus();
+    }
+    if (event.key === "Escape") {
+        document.getElementById("search").blur();
     }
 });
 
