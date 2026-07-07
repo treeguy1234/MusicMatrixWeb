@@ -5,7 +5,7 @@
    height="50"
    viewBox="0 0 1000.0 1000.0"
    id="svg1"
-   sodipodi:docname="AddOctave.svg"
+   sodipodi:docname="AddFifth.svg"
    inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -30,7 +30,7 @@
      inkscape:window-x="-9"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg1" />
+     inkscape:current-layer="g2" />
   <g
      id="g2"
      transform="translate(0.15711671,-12.285951)">
@@ -48,6 +48,6 @@
          id="tspan2"
          style="stroke-width:56.25"
          x="570.90955"
-         y="702.12354">8</tspan></text>
+         y="702.12354">5</tspan></text>
   </g>
 </svg>
