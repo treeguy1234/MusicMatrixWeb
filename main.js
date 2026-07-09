@@ -1,6 +1,27 @@
 const padGrid = document.getElementById("padGrid");
 const chipStatus = document.getElementById("chipStatus");
 const shortcutIndex = buildShortcutIndex(shortcuts);
+var draggedChip = null;
+
+padGrid.addEventListener("dragover", (e) => {
+    const slot = e.target.closest(".slot");
+    if (!slot) return;
+    e.preventDefault();
+    slot.classList.add("drag-over");
+});
+
+padGrid.addEventListener("dragleave", (e) => {
+    const slot = e.target.closest(".slot");
+    if (slot) slot.classList.remove("drag-over");
+});
+
+padGrid.addEventListener("drop", (e) => {
+    const slot = e.target.closest(".slot");
+    if (!slot || !draggedChip) return;
+    e.preventDefault();
+    slot.classList.remove("drag-over");
+    fillSlot(slot, draggedChip);
+});
 
 for (let i = 0; i <= 31; i++) {
     const slot = document.createElement("div");
@@ -15,7 +36,33 @@ for (let i = 0; i <= 31; i++) {
     );
     //chip.addEventListener("blur", () => setChipStatus());
     slot.innerHTML = `<span class="idx">S${i}</span>`;
+    if(getShortcutByIndex(i)) {
+        fillSlot(slot, getShortcutByIndex(i));
+    }
     padGrid.appendChild(slot);
+}
+
+function fillSlot(slot, targetChip) {
+    const slotIndex = slot.getAttribute("data-index");
+    var fragment = document.createDocumentFragment();
+    
+    var a = document.createElement("img");
+    a.src = targetChip.icon !== null ? targetChip.icon : "./Icons/MuseScore/NoIcon.svg";
+    
+    fragment.appendChild(a);
+    
+    slot.innerHTML = "";
+    slot.appendChild(fragment);
+    
+    bindShortcut(targetChip, slotIndex);
+}
+
+function bindShortcut(targetChip, index) {
+    localStorage.setItem(`S${index}`, JSON.stringify(targetChip));
+}
+
+function getShortcutByIndex(index) {
+    return JSON.parse(localStorage.getItem(`S${index}`));
 }
 
 function setChipStatus(name, desc, shortcut) {
@@ -44,10 +91,7 @@ function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
             chip.draggable = true;
             chip.dataset.name = item.title;
             chip.dataset.desc = item.description;
-            chip.setAttribute(
-                "shortcut",
-                `${item.shortkey1}${item.shortkey2 !== "" ? " + " : ""}${item.shortkey2}${item.shortkey3 !== "" ? " + " : ""}${item.shortkey3}`
-            );
+            chip.setAttribute("shortcut", compileShortcutText(item.shortkey1, item.shortkey2, item.shortkey3));
             if (item.icon) chip.dataset.icon = item.icon;
 
             if (item.icon) {
@@ -72,7 +116,10 @@ function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
                 draggedChip = {
                     icon: item.icon || null,
                     name: item.title,
-                    desc: item.description
+                    desc: item.description,
+                    key1: item.shortkey1,
+                    key2: item.shortkey2,
+                    key3: item.shortkey3
                 };
                 e.dataTransfer.effectAllowed = "copy";
             });
@@ -113,6 +160,10 @@ function buildShortcutIndex(shortcuts) {
     }
 
     return index;
+}
+
+function compileShortcutText(key1, key2, key3) {
+    return `${key1}${key2 !== "" ? " + " : ""}${key2}${key3 !== "" ? " + " : ""}${key3}`;
 }
 
 function updateCategoryVisibility() {
