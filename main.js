@@ -23,22 +23,22 @@ var assignedCount = {
 };
 
 const keyMap = {
-    "Ctrl": "KEY_LEFT_CTRL",
-    "Shift": "KEY_LEFT_SHIFT",
-    "Alt": "KEY_LEFT_ALT",
-    "Up": "KEY_UP_ARROW",
-    "Down": "KEY_DOWN_ARROW",
-    "Left": "KEY_LEFT_ARROW",
-    "Right": "KEY_RIGHT_ARROW",
-    "Del": "KEY_DELETE",
-    "Esc": "KEY_ESC",
-    "Ins": "KEY_INSERT",
-    "Home": "KEY_HOME",
-    "End": "KEY_END",
-    "PgUp": "KEY_PAGE_UP",
-    "PgDn": "KEY_PAGE_DOWN",
-    "Return": "KEY_RETURN",
-    "Space": "' '"
+    Ctrl: "KEY_LEFT_CTRL",
+    Shift: "KEY_LEFT_SHIFT",
+    Alt: "KEY_LEFT_ALT",
+    Up: "KEY_UP_ARROW",
+    Down: "KEY_DOWN_ARROW",
+    Left: "KEY_LEFT_ARROW",
+    Right: "KEY_RIGHT_ARROW",
+    Del: "KEY_DELETE",
+    Esc: "KEY_ESC",
+    Ins: "KEY_INSERT",
+    Home: "KEY_HOME",
+    End: "KEY_END",
+    PgUp: "KEY_PAGE_UP",
+    PgDn: "KEY_PAGE_DOWN",
+    Return: "KEY_RETURN",
+    Space: "' '"
 };
 
 for (var i = 0; i < 32; i++) {
@@ -284,19 +284,24 @@ function updateCategoryVisibility() {
 function buildCPP() {
     for (var r = 0; r < 32; r++) {
         for (var c = 0; c < 3; c++) {
-            mainCPP = mainCPP.replace(`R${r + 1}C${c + 1}`, stringToKey(boundShortcuts[r][`key${c+1}`]));
+            mainCPP = mainCPP.replace(`R${r + 1}C${c + 1}`, stringToKey(boundShortcuts[r][`key${c + 1}`]));
         }
     }
     navigator.clipboard.writeText(mainCPP);
+    return mainCPP;
 }
 
 function buildINI() {
     for (var r = 0; r < 32; r++) {
         for (var c = 0; c < 3; c++) {
-            MusicMatrixINI = MusicMatrixINI.replace(`R${r + 1}C${c + 1}`, stringToKey(boundShortcuts[r][`key${c+1}`]));
+            MusicMatrixINI = MusicMatrixINI.replace(
+                `R${r + 1}C${c + 1}`,
+                stringToKey(boundShortcuts[r][`key${c + 1}`])
+            );
         }
     }
     navigator.clipboard.writeText(MusicMatrixINI);
+    return MusicMatrixINI;
 }
 
 function stringToKey(input) {
@@ -304,6 +309,20 @@ function stringToKey(input) {
     if (keyMap[input]) return keyMap[input];
     if (/^F\d{1,2}$/.test(input)) return `KEY_${input}`;
     return `'${input}'`;
+}
+
+function downloadGeneratedCode(filename, codeString) {
+    const blob = new Blob([codeString], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
 }
 
 document.getElementById("search").addEventListener("input", (e) => {
@@ -340,12 +359,12 @@ document.getElementById("settingsButton").addEventListener("click", function () 
     window.location.reload();
 });
 
-document.getElementById("exportCPPButton").addEventListener("click", function() {
-    buildCPP();
+document.getElementById("exportCPPButton").addEventListener("click", function () {
+    downloadGeneratedCode("main.cpp", buildCPP());
 });
 
-document.getElementById("exportINIButton").addEventListener("click", function() {
-    buildINI();
+document.getElementById("exportINIButton").addEventListener("click", function () {
+    downloadGeneratedCode("MusicMatrix.ini", buildINI());
 });
 
 buildShortcutChips(shortcuts);
