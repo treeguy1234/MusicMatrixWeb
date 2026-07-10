@@ -1,7 +1,7 @@
 const padGrid = document.getElementById("padGrid");
 const chipStatus = document.getElementById("chipStatus");
 const exportCPPButton = document.getElementById("exportCPPButton");
-const exportINIButton = document.getElementById("exportINIButton");
+const exportINOButton = document.getElementById("exportINOButton");
 const shortcutIndex = buildShortcutIndex(shortcuts);
 
 var draggedChip = null;
@@ -147,10 +147,10 @@ function bindShortcut(targetChip, slot, index, wasAlreadyFilled = false) {
 function checkIfCanExport(number = assignedCount.count) {
     if (number < 32) {
         exportCPPButton.disabled = true;
-        exportINIButton.disabled = true;
+        exportINOButton.disabled = true;
     } else {
         exportCPPButton.disabled = false;
-        exportINIButton.disabled = false;
+        exportINOButton.disabled = false;
     }
 }
 
@@ -291,17 +291,17 @@ function buildCPP() {
     return mainCPP;
 }
 
-function buildINI() {
+function buildINO() {
     for (var r = 0; r < 32; r++) {
         for (var c = 0; c < 3; c++) {
-            MusicMatrixINI = MusicMatrixINI.replace(
+            MusicMatrixINO = MusicMatrixINO.replace(
                 `R${r + 1}C${c + 1}`,
                 stringToKey(boundShortcuts[r][`key${c + 1}`])
             );
         }
     }
-    navigator.clipboard.writeText(MusicMatrixINI);
-    return MusicMatrixINI;
+    navigator.clipboard.writeText(MusicMatrixINO);
+    return MusicMatrixINO;
 }
 
 function stringToKey(input) {
@@ -363,8 +363,8 @@ document.getElementById("exportCPPButton").addEventListener("click", function ()
     downloadGeneratedCode("main.cpp", buildCPP());
 });
 
-document.getElementById("exportINIButton").addEventListener("click", function () {
-    downloadGeneratedCode("MusicMatrix.ini", buildINI());
+document.getElementById("exportINOButton").addEventListener("click", function () {
+    downloadGeneratedCode("MusicMatrix.ino", buildINO());
 });
 
 buildShortcutChips(shortcuts);

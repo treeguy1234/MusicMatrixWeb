@@ -1,4 +1,4 @@
-var MusicMatixINITemplate = 
+var MusicMatixINOTemplate = 
 `#include <Keyboard.h>
 
 void sendShortcut(int index);
@@ -116,4 +116,4 @@ void releaseShortcut(int index) {
   }
 }`;
 
-var MusicMatrixINI = MusicMatixINITemplate;
+var MusicMatrixINO = MusicMatixINOTemplate;
