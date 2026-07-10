@@ -1,7 +1,49 @@
 const padGrid = document.getElementById("padGrid");
 const chipStatus = document.getElementById("chipStatus");
+const exportCPPButton = document.getElementById("exportCPPButton");
+const exportINIButton = document.getElementById("exportINIButton");
 const shortcutIndex = buildShortcutIndex(shortcuts);
+
 var draggedChip = null;
+var draggedFromSlot = null;
+
+var boundShortcuts = [];
+
+var assignedCount = {
+    number: 0,
+
+    get count() {
+        return this.number;
+    },
+
+    set count(newValue) {
+        this.number = newValue;
+        checkIfCanExport(newValue);
+    }
+};
+
+const keyMap = {
+    "Ctrl": "KEY_LEFT_CTRL",
+    "Shift": "KEY_LEFT_SHIFT",
+    "Alt": "KEY_LEFT_ALT",
+    "Up": "KEY_UP_ARROW",
+    "Down": "KEY_DOWN_ARROW",
+    "Left": "KEY_LEFT_ARROW",
+    "Right": "KEY_RIGHT_ARROW",
+    "Del": "KEY_DELETE",
+    "Esc": "KEY_ESC",
+    "Ins": "KEY_INSERT",
+    "Home": "KEY_HOME",
+    "End": "KEY_END",
+    "PgUp": "KEY_PAGE_UP",
+    "PgDn": "KEY_PAGE_DOWN",
+    "Return": "KEY_RETURN",
+    "Space": "' '"
+};
+
+for (var i = 0; i < 32; i++) {
+    boundShortcuts.push({});
+}
 
 padGrid.addEventListener("dragover", (e) => {
     const slot = e.target.closest(".slot");
@@ -20,54 +62,118 @@ padGrid.addEventListener("drop", (e) => {
     if (!slot || !draggedChip) return;
     e.preventDefault();
     slot.classList.remove("drag-over");
+
+    const targetIndex = slot.dataset.index;
+
+    if (draggedFromSlot !== null && draggedFromSlot === targetIndex) {
+        draggedChip = null;
+        draggedFromSlot = null;
+        return;
+    }
+
+    const originIndex = draggedFromSlot;
     fillSlot(slot, draggedChip);
+
+    if (originIndex !== null) {
+        const originSlot = padGrid.querySelector(`.slot[data-index="${originIndex}"]`);
+        if (originSlot) unbindSlot(originSlot);
+    }
+
+    draggedChip = null;
+    draggedFromSlot = null;
 });
 
 for (let i = 0; i <= 31; i++) {
     const slot = document.createElement("div");
     slot.className = "slot";
     slot.dataset.index = i;
-    slot.addEventListener("mouseenter", () =>
-        setChipStatus("Slot S" + i, "Row " + ((i % 8) + 1) + " Column " + Math.floor(i / 8 + 1))
-    );
-    //chip.addEventListener("mouseleave", () => setChipStatus());
-    slot.addEventListener("focus", () =>
-        setChipStatus("Slot S" + i, "Row " + (i % 8) + " Column " + Math.floor(i / 8 + 1))
-    );
-    //chip.addEventListener("blur", () => setChipStatus());
+    slot.addEventListener("mouseenter", function () {
+        if (slot.getAttribute("customHint")) {
+            setChipStatus("Slot S" + i, slot.getAttribute("customHint"), "", 1);
+        } else {
+            setChipStatus("Slot S" + i, "Row " + ((i % 8) + 1) + " Column " + Math.floor(i / 8 + 1), "", 0);
+        }
+    });
+    slot.addEventListener("focus", function () {
+        if (slot.getAttribute("customHint")) {
+            setChipStatus("Slot S" + i, slot.getAttribute("customHint"), "", 1);
+        } else {
+            setChipStatus("Slot S" + i, "Row " + ((i % 8) + 1) + " Column " + Math.floor(i / 8 + 1), "", 0);
+        }
+    });
+    slot.addEventListener("click", function () {
+        unbindSlot(slot);
+    });
     slot.innerHTML = `<span class="idx">S${i}</span>`;
-    if(getShortcutByIndex(i)) {
+    if (getShortcutByIndex(i)) {
         fillSlot(slot, getShortcutByIndex(i));
     }
     padGrid.appendChild(slot);
 }
 
 function fillSlot(slot, targetChip) {
-    const slotIndex = slot.getAttribute("data-index");
-    var fragment = document.createDocumentFragment();
-    
-    var a = document.createElement("img");
-    a.src = targetChip.icon !== null ? targetChip.icon : "./Icons/MuseScore/NoIcon.svg";
-    
-    fragment.appendChild(a);
-    
+    const slotIndex = slot.dataset.index;
+    const wasAlreadyFilled = slot.classList.contains("filled");
+
+    const img = document.createElement("img");
+    img.src = targetChip.icon !== null ? targetChip.icon : "./Icons/MuseScore/NoIcon.svg";
+    img.className = "chip-icon";
+    img.alt = targetChip.name || "";
+    img.draggable = true;
+
+    img.addEventListener("dragstart", (e) => {
+        draggedChip = { ...targetChip };
+        draggedFromSlot = slotIndex;
+        e.dataTransfer.effectAllowed = "move";
+        e.stopPropagation();
+    });
+
     slot.innerHTML = "";
-    slot.appendChild(fragment);
-    
-    bindShortcut(targetChip, slotIndex);
+    slot.appendChild(img);
+    slot.classList.add("filled");
+
+    bindShortcut(targetChip, slot, slotIndex, wasAlreadyFilled);
 }
 
-function bindShortcut(targetChip, index) {
+function bindShortcut(targetChip, slot, index, wasAlreadyFilled = false) {
     localStorage.setItem(`S${index}`, JSON.stringify(targetChip));
+    slot.setAttribute("customHint", `${targetChip.name}: ${targetChip.desc}`);
+    boundShortcuts[index].key1 = targetChip.key1;
+    boundShortcuts[index].key2 = targetChip.key2;
+    boundShortcuts[index].key3 = targetChip.key3;
+    if (!wasAlreadyFilled) assignedCount.count++;
+}
+
+function checkIfCanExport(number = assignedCount.count) {
+    if (number < 32) {
+        exportCPPButton.disabled = true;
+        exportINIButton.disabled = true;
+    } else {
+        exportCPPButton.disabled = false;
+        exportINIButton.disabled = false;
+    }
+}
+
+function unbindSlot(slot) {
+    if (!slot.classList.contains("filled")) return;
+
+    const index = slot.dataset.index;
+    localStorage.removeItem(`S${index}`);
+    slot.removeAttribute("customHint");
+    slot.classList.remove("filled");
+    slot.innerHTML = `<span class="idx">S${index}</span>`;
+
+    assignedCount.count--;
 }
 
 function getShortcutByIndex(index) {
     return JSON.parse(localStorage.getItem(`S${index}`));
 }
 
-function setChipStatus(name, desc, shortcut) {
+function setChipStatus(name, desc, shortcut, divider) {
     //chipStatus.textContent = desc ? `${name}: ${desc} - ${shortcut}`: "";
-    chipStatus.textContent = desc ? `${name}: ${desc}` : "";
+
+    chipStatus.textContent = desc ? `${name}${divider == 0 ? ":" : " -"} ${desc}` : "";
 }
 
 function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
@@ -121,15 +227,16 @@ function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
                     key2: item.shortkey2,
                     key3: item.shortkey3
                 };
+                draggedFromSlot = null; // NEW
                 e.dataTransfer.effectAllowed = "copy";
             });
 
             chip.addEventListener("mouseenter", () =>
-                setChipStatus(item.title, item.description, chip.getAttribute("shortcut"))
+                setChipStatus(item.title, item.description, chip.getAttribute("shortcut"), 0)
             );
             //chip.addEventListener("mouseleave", () => setChipStatus());
             chip.addEventListener("focus", () =>
-                setChipStatus(item.title, item.description, chip.getAttribute("shortcut"))
+                setChipStatus(item.title, item.description, chip.getAttribute("shortcut"), 0)
             );
             //chip.addEventListener("blur", () => setChipStatus());
 
@@ -174,6 +281,31 @@ function updateCategoryVisibility() {
     });
 }
 
+function buildCPP() {
+    for (var r = 0; r < 32; r++) {
+        for (var c = 0; c < 3; c++) {
+            mainCPP = mainCPP.replace(`R${r + 1}C${c + 1}`, stringToKey(boundShortcuts[r][`key${c+1}`]));
+        }
+    }
+    navigator.clipboard.writeText(mainCPP);
+}
+
+function buildINI() {
+    for (var r = 0; r < 32; r++) {
+        for (var c = 0; c < 3; c++) {
+            MusicMatrixINI = MusicMatrixINI.replace(`R${r + 1}C${c + 1}`, stringToKey(boundShortcuts[r][`key${c+1}`]));
+        }
+    }
+    navigator.clipboard.writeText(MusicMatrixINI);
+}
+
+function stringToKey(input) {
+    if (input == null || input === "") return "0";
+    if (keyMap[input]) return keyMap[input];
+    if (/^F\d{1,2}$/.test(input)) return `KEY_${input}`;
+    return `'${input}'`;
+}
+
 document.getElementById("search").addEventListener("input", (e) => {
     const results = searchShortcuts(e.target.value);
     const matchingTitles = new Set(results.map((r) => r.title));
@@ -203,4 +335,18 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
+document.getElementById("settingsButton").addEventListener("click", function () {
+    localStorage.clear();
+    window.location.reload();
+});
+
+document.getElementById("exportCPPButton").addEventListener("click", function() {
+    buildCPP();
+});
+
+document.getElementById("exportINIButton").addEventListener("click", function() {
+    buildINI();
+});
+
 buildShortcutChips(shortcuts);
+checkIfCanExport();
