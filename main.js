@@ -308,7 +308,7 @@ function stringToKey(input) {
     if (input == null || input === "") return "0";
     if (keyMap[input]) return keyMap[input];
     if (/^F\d{1,2}$/.test(input)) return `KEY_${input}`;
-    return `'${input}'`;
+    return `'${input.toLowerCase()}'`;
 }
 
 function downloadGeneratedCode(filename, codeString) {
