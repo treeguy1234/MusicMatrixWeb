@@ -60,7 +60,7 @@ const shortcuts = {
 
 ```
 
-To add, remove, or re-map a shortcut, edit this file directly. The sidebar will search rebuild automatically from whatever's in here. Setting `icon` to `null` is fine; unmatched entries fall back to a text label.
+To add, remove, or re-map a shortcut, edit this file directly. The sidebar will rebuild automatically from whatever's in here. Setting `icon` to `null` is fine; unmatched entries fall back to a text label.
 
 ## Hardware
 
@@ -70,9 +70,7 @@ This tool is built specifically for the **MusicMatrix** macro pad:
 -   Arduino Leonardo (native USB HID via `Keyboard.h`)
 -   Cherry MX–compatible switches, diode matrix wiring
 
-<!-- TODO: link to the hardware repo / build guide here, once it has its own README -->
-
-Hardware design files and firmware live in a separate repo: (I'm still making it)
+Hardware design files and firmware live in a separate repo (I'm still making it)
 
 ## Roadmap
 
@@ -80,14 +78,13 @@ Hardware design files and firmware live in a separate repo: (I'm still making it
 -   [ ] Touch-screen compatibility
 -   [ ] Import/export layout presets as shareable JSON
 
-<!-- TODO: trim or expand this list to match what's actually planned -->
 
 ## Acknowledgments
 
 -   Icons extracted from [Bravura](https://github.com/steinbergmedia/bravura), the SMuFL-compliant music font by Steinberg, licensed under the SIL Open Font License.
 -   Shortcut reference from the official [MuseScore Studio Handbook](https://musescore.org/en/handbook/4).
--   Additionaly icons from [Google Fonts](https://fonts.google.com/icons)
+-   Additionally, icons from [Google Fonts](https://fonts.google.com/icons)
 
 ## License
 
-This project is licensed under the [MIT License](https://claude.ai/chat/LICENSE).
+This project is licensed under the [MIT License](https://github.com/treeguy1234/MusicMatrixWeb/blob/main/LICENSE).
