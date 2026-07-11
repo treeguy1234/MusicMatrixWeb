@@ -67,7 +67,7 @@ To add, remove, or re-map a shortcut, edit this file directly. The sidebar will 
 This tool is built specifically for the **MusicMatrix** macro pad:
 
 -   4×8 button grid (32 macros) + a 7-key piano section
--   Arduino Leonardo (native USB HID via `Keyboard.h`)
+-   Arduino Leonardo or Arduino Uno R4 WiFi (native USB HID via `Keyboard.h`)
 -   Cherry MX–compatible switches, diode matrix wiring
 
 Hardware design files and firmware live in a separate repo (I'm still making it)
