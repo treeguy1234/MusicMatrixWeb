@@ -2,10 +2,6 @@
     font-family: NotoSerif;
     src: url(./Fonts/NotoSerif.ttf);
 }
-@font-face {
-    font-family: Commissioner;
-    src: url(./Fonts/Commissioner.ttf);
-}
 
 :root {
     --bg-void: #15171b;
