@@ -173,7 +173,11 @@ function getShortcutByIndex(index) {
 function setChipStatus(name, desc, shortcut, divider) {
     //chipStatus.textContent = desc ? `${name}: ${desc} - ${shortcut}`: "";
 
-    chipStatus.textContent = desc ? `${name}${divider == 0 ? ":" : " -"} ${desc}` : "";
+    if (divider < 2) {
+        chipStatus.textContent = desc ? `${name}${divider == 0 ? ":" : " -"} ${desc}` : "";
+    } else {
+        chipStatus.textContent = name;
+    }
 }
 
 function buildShortcutChips(shortcuts, sidebarSelector = "#menuContent") {
@@ -287,7 +291,10 @@ function buildCPP() {
             mainCPP = mainCPP.replace(`R${r + 1}C${c + 1}`, stringToKey(boundShortcuts[r][`key${c + 1}`]));
         }
     }
-    navigator.clipboard.writeText(mainCPP);
+    navigator.clipboard
+        .writeText(mainCPP)
+        .then(() => setChipStatus("Successfully copied built c++ code to clipboard!", "", "", 2))
+        .catch((error) => setChipStatus("Did not copy built c++ code to clipboard" + error, "", "", ""));
     return mainCPP;
 }
 
@@ -300,7 +307,10 @@ function buildINO() {
             );
         }
     }
-    navigator.clipboard.writeText(MusicMatrixINO);
+    navigator.clipboard
+        .writeText(MusicMatrixINO)
+        .then(() => setChipStatus("Successfully copied built C++ code to clipboard!", "", "", 2))
+        .catch((error) => setChipStatus("Did not copy built C++ code to clipboard" + error, "", "", ""));
     return MusicMatrixINO;
 }
 
