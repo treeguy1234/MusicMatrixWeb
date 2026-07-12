@@ -1,4 +1,5 @@
 
+
 # MusicMatrix Web Code Builder
 
 A browser-based configurator for **MusicMatrix**, a custom macro pad built for [MuseScore Studio 4](https://musescore.org/). Drag MuseScore shortcuts onto a 4×8 grid, and export ready-to-flash Arduino firmware.
@@ -79,11 +80,33 @@ Hardware design files and firmware live in a separate repo (I'm still making it)
 -   [ ] Import/export layout presets as shareable JSON
 
 
+## Contributing
+
+Want to contribute an icon, shortcut, or anything else? Contributions are welcome!
+
+1. **Fork** this repository and clone it locally.
+2. Create a new branch for your change:
+```bash
+   git checkout -b <your-branch-name>
+```
+3. Make your changes. Add an icon to `Icons/`, update an entry in `musescore_shortcuts.js`, whatever it may be.
+4. Commit and push your branch:
+```bash
+   git commit -am "Description of your changes"
+   git push origin <your-branch-name>
+```
+5. Open a **pull request** describing what you added or changed.
+
+If you're adding a new icon, please keep it visually consistent with the existing set (single-color, similar stroke weight) so everything reads well together on a small keycap.
+
+If you spot a bug or have an idea but don't want to implement it yourself, feel free to just [open an issue](../../issues) instead.
+
+
 ## Acknowledgments
 
--   Icons extracted from [Bravura](https://github.com/steinbergmedia/bravura), the SMuFL-compliant music font by Steinberg, licensed under the SIL Open Font License.
+-   Musical icons extracted from [Bravura](https://github.com/steinbergmedia/bravura), the SMuFL-compliant music font by Steinberg, licensed under the SIL Open Font License.
 -   Shortcut reference from the official [MuseScore Studio Handbook](https://musescore.org/en/handbook/4).
--   Additionally, icons from [Google Fonts](https://fonts.google.com/icons)
+-   Icons from [Google Fonts](https://fonts.google.com/icons)
 
 ## License
 
