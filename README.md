@@ -78,6 +78,7 @@ Hardware design files and firmware live in a separate repo (I'm still making it)
 -   [ ] Piano section support in the configurator
 -   [ ] Touch-screen compatibility
 -   [ ] Import/export layout presets as shareable JSON
+-   [ ] Add your own shortcuts
 
 
 ## Contributing
