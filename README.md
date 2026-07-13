@@ -12,7 +12,7 @@ A browser-based configurator for **MusicMatrix**, a custom macro pad built for [
 -   **Searchable shortcut library** - instantly filter by name or description (`Ctrl+K` or `/` to jump to search).
 -   **Hover-to-preview** - hover or focus any icon to see its full name, description, and key combination before you commit it to a slot.
 -   **Live status bar** - no more guessing which slot is which; hovering a slot shows its row/column position or its currently assigned shortcut.
--   **One-click export** - generates a ready-to-paste `shortcuts[][3]` array for the Arduino sketch, matching your exact layout.
+-   **One-click export** - generates a full code file so you can drop it into your PlatformIO project or Arduino IDE sketch.
 -   **Persistent layout** - your grid is saved to the browser automatically (via `localStorage`), so refreshing the page won't lose your work.
 -   **No build step, no backend** - pure HTML/CSS/JS. Open `index.html` directly, or serve it with any static file server.
 
