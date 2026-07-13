@@ -17,7 +17,7 @@ A browser-based configurator for **MusicMatrix**, a custom macro pad built for [
 -   **No build step, no backend** - pure HTML/CSS/JS. Open `index.html` directly, or serve it with any static file server.
 
 ## Getting Started
-Navigate to [https://treeguy1234.github.io/MusicMatrixWeb/](https://treeguy1234.github.io/MusicMatrixWeb/) to get started.
+Navigate to [https://treeguy1234.github.io/MusicMatrixWeb/](https://treeguy1234.github.io/MusicMatrixWeb/) to get started. For a more customizable experience, host the files yourself.
 
 ## Usage
 
