@@ -107,7 +107,7 @@ If you spot a bug or have an idea but don't want to implement it yourself, feel 
 
 -   Musical icons extracted from [Bravura](https://github.com/steinbergmedia/bravura), the SMuFL-compliant music font by Steinberg, licensed under the SIL Open Font License.
 -   Shortcut reference from the official [MuseScore Studio Handbook](https://musescore.org/en/handbook/4).
--   Icons from [Google Fonts](https://fonts.google.com/icons)
+-   Some icons/parts of icons from [Google Fonts](https://fonts.google.com/icons)
 
 ## License
 
