@@ -1,4 +1,6 @@
 //A list of many MuseScore shortcuts
+//Any shortcut commented out means it was thought unnecessary
+
 const shortcuts = {
   "File Operations": [
     { title: "New Score",   description: "Create a new score",              shortkey1: "Ctrl",  shortkey2: "N",         shortkey3: "",  icon: "./Icons/MuseScore/New.svg" },
