@@ -2,14 +2,16 @@ const padGrid = document.getElementById("padGrid");
 const chipStatus = document.getElementById("chipStatus");
 const exportCPPButton = document.getElementById("exportCPPButton");
 const exportINOButton = document.getElementById("exportINOButton");
+const exportZIPButton = document.getElementById("exportZIPButton");
 const shortcutIndex = buildShortcutIndex(shortcuts);
+let zip = new JSZip();
 
-var draggedChip = null;
-var draggedFromSlot = null;
+let draggedChip = null;
+let draggedFromSlot = null;
 
-var boundShortcuts = [];
+let boundShortcuts = [];
 
-var assignedCount = {
+let assignedCount = {
     number: 0,
 
     get count() {
@@ -41,7 +43,7 @@ const keyMap = {
     Space: "' '"
 };
 
-for (var i = 0; i < 32; i++) {
+for (let i = 0; i < 32; i++) {
     boundShortcuts.push({});
 }
 
@@ -148,9 +150,13 @@ function checkIfCanExport(number = assignedCount.count) {
     if (number < 32) {
         exportCPPButton.disabled = true;
         exportINOButton.disabled = true;
+        exportZIPButton.disabled = true;
+        return false;
     } else {
         exportCPPButton.disabled = false;
         exportINOButton.disabled = false;
+        exportZIPButton.disabled = false;
+        return true;
     }
 }
 
@@ -286,32 +292,40 @@ function updateCategoryVisibility() {
 }
 
 function buildCPP() {
-    for (var r = 0; r < 32; r++) {
-        for (var c = 0; c < 3; c++) {
-            mainCPP = mainCPP.replace(`R${r + 1}C${c + 1}`, stringToKey(boundShortcuts[r][`key${c + 1}`]));
+    if (checkIfCanExport() === true) {
+        for (let r = 0; r < 32; r++) {
+            for (let c = 0; c < 3; c++) {
+                mainCPP = mainCPP.replace(`R${r + 1}C${c + 1}`, stringToKey(boundShortcuts[r][`key${c + 1}`]));
+            }
         }
+        navigator.clipboard
+            .writeText(mainCPP)
+            .then(() => setChipStatus("Successfully copied built C++ code to clipboard!", "", "", 2))
+            .catch((error) => setChipStatus("Did not copy built C++ code to clipboard" + error, "", "", ""));
+        return mainCPP;
+    } else {
+        console.warn("Can't export INO. Not all of the slots are filled in!");
     }
-    navigator.clipboard
-        .writeText(mainCPP)
-        .then(() => setChipStatus("Successfully copied built c++ code to clipboard!", "", "", 2))
-        .catch((error) => setChipStatus("Did not copy built c++ code to clipboard" + error, "", "", ""));
-    return mainCPP;
 }
 
 function buildINO() {
-    for (var r = 0; r < 32; r++) {
-        for (var c = 0; c < 3; c++) {
-            MusicMatrixINO = MusicMatrixINO.replace(
-                `R${r + 1}C${c + 1}`,
-                stringToKey(boundShortcuts[r][`key${c + 1}`])
-            );
+    if (checkIfCanExport() === true) {
+        for (let r = 0; r < 32; r++) {
+            for (let c = 0; c < 3; c++) {
+                MusicMatrixINO = MusicMatrixINO.replace(
+                    `R${r + 1}C${c + 1}`,
+                    stringToKey(boundShortcuts[r][`key${c + 1}`])
+                );
+            }
         }
+        navigator.clipboard
+            .writeText(MusicMatrixINO)
+            .then(() => setChipStatus("Successfully copied built C++ code to clipboard!", "", "", 2))
+            .catch((error) => setChipStatus("Did not copy built C++ code to clipboard" + error, "", "", ""));
+        return MusicMatrixINO;
+    } else {
+        console.warn("Can't export INO. Not all of the slots are filled in!");
     }
-    navigator.clipboard
-        .writeText(MusicMatrixINO)
-        .then(() => setChipStatus("Successfully copied built C++ code to clipboard!", "", "", 2))
-        .catch((error) => setChipStatus("Did not copy built C++ code to clipboard" + error, "", "", ""));
-    return MusicMatrixINO;
 }
 
 function stringToKey(input) {
@@ -333,6 +347,65 @@ function downloadGeneratedCode(filename, codeString) {
     document.body.removeChild(a);
 
     URL.revokeObjectURL(url);
+}
+
+async function buildZIP() {
+    if (checkIfCanExport() === true) {
+        zip = new JSZip()
+        let content;
+        const fetchPromises = [];
+
+        const sortedKeys = Object.keys(localStorage).sort((a, b) => {
+            const numA = parseInt(a.slice(1), 10);
+            const numB = parseInt(b.slice(1), 10);
+            return numA - numB;
+        });
+
+        zip.file("firmware/main.cpp", buildCPP());
+        zip.file("firmware/MusicMatrix.ino", buildINO());
+
+        for (const key of sortedKeys) {
+            const entry = JSON.parse(localStorage[key]);
+            const name = (entry.icon).match(/([^/]+)\.svg$/)[1];
+
+            let fileBlob = await returnFileBlob(`/Models/MuseScore/${name}.stl`);
+            if (fileBlob == null) { throw new Error(`returnFileBlob(${name}) returned null!`); }
+            zip.file(`icons/${name}.stl`, fileBlob);
+            content = await zip.generateAsync({ type: "blob" });
+            console.log(`compiled ZIP for ${name}`);
+        }
+
+        downloadZIP(content, "Music_Matrix_Export.zip");
+    } else {
+        console.warn("Can't export ZIP. Not all of the slots are filled in!")
+    }
+}
+
+async function downloadZIP(content, name) {
+    const url = URL.createObjectURL(content);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+async function returnFileBlob(filePath) {
+    try {
+        const response = await fetch(filePath);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const fileBlob = await response.blob();
+        return fileBlob;
+    } catch (error) {
+        console.error('Error reading file:', error);
+        return null;
+    }
 }
 
 document.getElementById("search").addEventListener("input", (e) => {
@@ -369,12 +442,16 @@ document.getElementById("settingsButton").addEventListener("click", function () 
     window.location.reload();
 });
 
-document.getElementById("exportCPPButton").addEventListener("click", function () {
+exportCPPButton.addEventListener("click", function () {
     downloadGeneratedCode("main.cpp", buildCPP());
 });
 
-document.getElementById("exportINOButton").addEventListener("click", function () {
+exportINOButton.addEventListener("click", function () {
     downloadGeneratedCode("MusicMatrix.ino", buildINO());
+});
+
+exportZIPButton.addEventListener("click", function () {
+    buildZIP();
 });
 
 buildShortcutChips(shortcuts);
