@@ -134,7 +134,7 @@ function fillSlot(slot, targetChip) {
     slot.appendChild(img);
     slot.classList.add("filled");
 
-    bindShortcut(targetChip, slot, slotIndex, wasAlreadyFilled);
+    bindShortcut(targetChip, slot, slotIndex, wasAlrBLOeadyFilled);
 }
 
 function bindShortcut(targetChip, slot, index, wasAlreadyFilled = false) {
@@ -368,7 +368,7 @@ async function buildZIP() {
             const entry = JSON.parse(localStorage[key]);
             const name = (entry.icon).match(/([^/]+)\.svg$/)[1];
 
-            let fileBlob = await returnFileBlob(`/Models/MuseScore/${name}.stl`);
+            let fileBlob = await returnFileBlob(`./Models/MuseScore/${name}.stl`);
             if (fileBlob == null) { throw new Error(`returnFileBlob(${name}) returned null!`); }
             zip.file(`icons/${name}.stl`, fileBlob);
             content = await zip.generateAsync({ type: "blob" });
